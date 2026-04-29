@@ -1,0 +1,692 @@
+/* ============================================================
+   neiki-cookie-banner.css
+   Production-ready GDPR cookie consent banner styles
+   Version: 1.0.0
+   ============================================================ */
+
+/* ----------------------------------------------------------
+   1. CSS Custom Properties (Light theme defaults)
+   ---------------------------------------------------------- */
+.neiki-cb {
+  --ncb-bg: #ffffff;
+  --ncb-text: #1a1a1a;
+  --ncb-text-muted: #6b7280;
+  --ncb-border: #e5e7eb;
+  --ncb-accent: #2563eb;
+  --ncb-accent-hover: #1d4ed8;
+  --ncb-btn-text: #ffffff;
+  --ncb-btn-secondary-bg: #f3f4f6;
+  --ncb-btn-secondary-text: #374151;
+  --ncb-btn-secondary-hover: #e5e7eb;
+  --ncb-radius: 12px;
+  --ncb-radius-sm: 8px;
+  --ncb-shadow: 0 4px 24px rgba(0, 0, 0, 0.10);
+  --ncb-font: system-ui, -apple-system, 'Segoe UI', Roboto, sans-serif;
+  --ncb-font-size: 14px;
+  --ncb-transition: 0.22s ease;
+  --ncb-backdrop: rgba(0, 0, 0, 0.45);
+  --ncb-toggle-bg: #d1d5db;
+  --ncb-toggle-bg-active: var(--ncb-accent);
+  --ncb-toggle-knob: #ffffff;
+  --ncb-toggle-locked-bg: #e5e7eb;
+  --ncb-toggle-locked-knob: #9ca3af;
+  --ncb-category-hover: #f9fafb;
+  --ncb-countdown-bg: #fef3c7;
+  --ncb-countdown-text: #92400e;
+}
+
+/* ----------------------------------------------------------
+   2. Dark theme
+   ---------------------------------------------------------- */
+.neiki-cb--dark {
+  --ncb-bg: #1f2937;
+  --ncb-text: #f9fafb;
+  --ncb-text-muted: #9ca3af;
+  --ncb-border: #374151;
+  --ncb-accent: #3b82f6;
+  --ncb-accent-hover: #2563eb;
+  --ncb-btn-text: #ffffff;
+  --ncb-btn-secondary-bg: #374151;
+  --ncb-btn-secondary-text: #e5e7eb;
+  --ncb-btn-secondary-hover: #4b5563;
+  --ncb-shadow: 0 4px 24px rgba(0, 0, 0, 0.30);
+  --ncb-toggle-bg: #4b5563;
+  --ncb-toggle-locked-bg: #374151;
+  --ncb-toggle-locked-knob: #6b7280;
+  --ncb-category-hover: #283344;
+  --ncb-countdown-bg: #451a03;
+  --ncb-countdown-text: #fbbf24;
+}
+
+/* Auto theme via prefers-color-scheme */
+@media (prefers-color-scheme: dark) {
+  .neiki-cb--auto {
+    --ncb-bg: #1f2937;
+    --ncb-text: #f9fafb;
+    --ncb-text-muted: #9ca3af;
+    --ncb-border: #374151;
+    --ncb-accent: #3b82f6;
+    --ncb-accent-hover: #2563eb;
+    --ncb-btn-text: #ffffff;
+    --ncb-btn-secondary-bg: #374151;
+    --ncb-btn-secondary-text: #e5e7eb;
+    --ncb-btn-secondary-hover: #4b5563;
+    --ncb-shadow: 0 4px 24px rgba(0, 0, 0, 0.30);
+    --ncb-toggle-bg: #4b5563;
+    --ncb-toggle-locked-bg: #374151;
+    --ncb-toggle-locked-knob: #6b7280;
+    --ncb-category-hover: #283344;
+    --ncb-countdown-bg: #451a03;
+    --ncb-countdown-text: #fbbf24;
+  }
+}
+
+/* ----------------------------------------------------------
+   3. Reset & Base
+   ---------------------------------------------------------- */
+.neiki-cb,
+.neiki-cb *,
+.neiki-cb *::before,
+.neiki-cb *::after {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+.neiki-cb {
+  position: fixed;
+  font-family: var(--ncb-font);
+  font-size: var(--ncb-font-size);
+  line-height: 1.5;
+  color: var(--ncb-text);
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+/* Lock body scroll helper */
+body.neiki-cb-lock-scroll {
+  overflow: hidden !important;
+}
+
+/* ----------------------------------------------------------
+   4. Backdrop (modal layout)
+   ---------------------------------------------------------- */
+.neiki-cb__backdrop {
+  position: fixed;
+  inset: 0;
+  background: var(--ncb-backdrop);
+  opacity: 0;
+  transition: opacity var(--ncb-transition);
+  pointer-events: none;
+}
+
+.neiki-cb--visible .neiki-cb__backdrop {
+  opacity: 1;
+  pointer-events: auto;
+}
+
+/* ----------------------------------------------------------
+   5. Container
+   ---------------------------------------------------------- */
+.neiki-cb__container {
+  position: relative;
+  background: var(--ncb-bg);
+  border: 1px solid var(--ncb-border);
+  box-shadow: var(--ncb-shadow);
+  overflow: hidden;
+}
+
+/* ----------------------------------------------------------
+   6. Layouts
+   ---------------------------------------------------------- */
+
+/* --- Bar layout --- */
+.neiki-cb--bar {
+  left: 0;
+  right: 0;
+  padding: 0;
+}
+
+.neiki-cb--bar .neiki-cb__container {
+  border-radius: 0;
+  border-left: none;
+  border-right: none;
+  max-height: 100vh;
+  overflow-y: auto;
+}
+
+.neiki-cb--bar.neiki-cb--bottom {
+  bottom: 0;
+}
+
+.neiki-cb--bar.neiki-cb--top {
+  top: 0;
+}
+
+.neiki-cb--bar .neiki-cb__main {
+  display: flex;
+  align-items: center;
+  gap: 24px;
+  padding: 20px 32px;
+}
+
+.neiki-cb--bar .neiki-cb__content {
+  flex: 1;
+  min-width: 0;
+}
+
+.neiki-cb--bar .neiki-cb__actions {
+  display: flex;
+  gap: 10px;
+  flex-shrink: 0;
+}
+
+/* --- Box layout --- */
+.neiki-cb--box {
+  max-width: 420px;
+  width: calc(100% - 32px);
+  padding: 0;
+}
+
+.neiki-cb--box .neiki-cb__container {
+  border-radius: var(--ncb-radius);
+  max-height: calc(100vh - 32px);
+  overflow-y: auto;
+}
+
+.neiki-cb--box.neiki-cb--bottom-left {
+  bottom: 16px;
+  left: 16px;
+}
+
+.neiki-cb--box.neiki-cb--bottom-right {
+  bottom: 16px;
+  right: 16px;
+}
+
+.neiki-cb--box.neiki-cb--bottom {
+  bottom: 16px;
+  left: 16px;
+}
+
+.neiki-cb--box.neiki-cb--top {
+  top: 16px;
+  left: 16px;
+}
+
+.neiki-cb--box .neiki-cb__main {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+  padding: 20px;
+}
+
+.neiki-cb--box .neiki-cb__actions {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+/* --- Modal layout --- */
+.neiki-cb--modal {
+  inset: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 16px;
+}
+
+.neiki-cb--modal .neiki-cb__container {
+  border-radius: var(--ncb-radius);
+  max-width: 560px;
+  width: 100%;
+  max-height: calc(100vh - 32px);
+  overflow-y: auto;
+}
+
+.neiki-cb--modal .neiki-cb__main {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+  padding: 24px;
+}
+
+.neiki-cb--modal .neiki-cb__actions {
+  display: flex;
+  gap: 10px;
+}
+
+/* ----------------------------------------------------------
+   7. Content
+   ---------------------------------------------------------- */
+.neiki-cb__title {
+  font-size: 1.125em;
+  font-weight: 700;
+  margin-bottom: 6px;
+  color: var(--ncb-text);
+}
+
+.neiki-cb__description {
+  font-size: var(--ncb-font-size);
+  color: var(--ncb-text-muted);
+  line-height: 1.6;
+}
+
+.neiki-cb__description a {
+  color: var(--ncb-accent);
+  text-decoration: underline;
+  text-underline-offset: 2px;
+  transition: color var(--ncb-transition);
+}
+
+.neiki-cb__description a:hover {
+  color: var(--ncb-accent-hover);
+}
+
+/* ----------------------------------------------------------
+   8. Buttons
+   ---------------------------------------------------------- */
+.neiki-cb__btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  min-height: 44px;
+  padding: 10px 20px;
+  border: none;
+  border-radius: var(--ncb-radius-sm);
+  font-family: var(--ncb-font);
+  font-size: var(--ncb-font-size);
+  font-weight: 600;
+  cursor: pointer;
+  white-space: nowrap;
+  transition: background var(--ncb-transition), transform 0.1s ease, box-shadow var(--ncb-transition);
+  user-select: none;
+  -webkit-tap-highlight-color: transparent;
+  outline: none;
+}
+
+.neiki-cb__btn:focus-visible {
+  outline: 2px solid var(--ncb-accent);
+  outline-offset: 2px;
+}
+
+.neiki-cb__btn:active {
+  transform: scale(0.97);
+}
+
+/* Primary */
+.neiki-cb__btn--primary {
+  background: var(--ncb-accent);
+  color: var(--ncb-btn-text);
+}
+
+.neiki-cb__btn--primary:hover {
+  background: var(--ncb-accent-hover);
+}
+
+/* Secondary */
+.neiki-cb__btn--secondary {
+  background: var(--ncb-btn-secondary-bg);
+  color: var(--ncb-btn-secondary-text);
+}
+
+.neiki-cb__btn--secondary:hover {
+  background: var(--ncb-btn-secondary-hover);
+}
+
+/* ----------------------------------------------------------
+   9. Preferences Panel
+   ---------------------------------------------------------- */
+.neiki-cb__prefs {
+  border-top: 1px solid var(--ncb-border);
+  overflow: hidden;
+  max-height: 0;
+  opacity: 0;
+  transition: max-height 0.35s ease, opacity 0.25s ease, padding 0.35s ease;
+  padding: 0 24px;
+}
+
+.neiki-cb--bar .neiki-cb__prefs {
+  padding: 0 32px;
+}
+
+.neiki-cb__prefs--open {
+  max-height: 600px;
+  opacity: 1;
+  padding: 16px 24px 20px;
+}
+
+.neiki-cb--bar .neiki-cb__prefs--open {
+  padding: 16px 32px 20px;
+}
+
+/* Modal always shows prefs open */
+.neiki-cb--modal .neiki-cb__prefs {
+  max-height: none;
+  opacity: 1;
+  padding: 0 24px 4px;
+  border-top: none;
+}
+
+.neiki-cb__prefs-title {
+  font-size: 0.95em;
+  font-weight: 700;
+  margin-bottom: 12px;
+  color: var(--ncb-text);
+}
+
+/* ----------------------------------------------------------
+   10. Category row
+   ---------------------------------------------------------- */
+.neiki-cb__category {
+  display: flex;
+  align-items: flex-start;
+  gap: 12px;
+  padding: 12px;
+  border-radius: var(--ncb-radius-sm);
+  transition: background var(--ncb-transition);
+}
+
+.neiki-cb__category:hover {
+  background: var(--ncb-category-hover);
+}
+
+.neiki-cb__category + .neiki-cb__category {
+  margin-top: 4px;
+}
+
+.neiki-cb__category-icon {
+  flex-shrink: 0;
+  width: 36px;
+  height: 36px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 8px;
+  background: var(--ncb-btn-secondary-bg);
+  color: var(--ncb-text-muted);
+  font-size: 16px;
+}
+
+.neiki-cb__category-info {
+  flex: 1;
+  min-width: 0;
+}
+
+.neiki-cb__category-label {
+  font-weight: 600;
+  font-size: var(--ncb-font-size);
+  color: var(--ncb-text);
+  margin-bottom: 2px;
+}
+
+.neiki-cb__category-desc {
+  font-size: 0.85em;
+  color: var(--ncb-text-muted);
+  line-height: 1.45;
+}
+
+/* ----------------------------------------------------------
+   11. Toggle switch
+   ---------------------------------------------------------- */
+.neiki-cb__toggle {
+  flex-shrink: 0;
+  position: relative;
+  width: 44px;
+  height: 24px;
+  margin-top: 6px;
+  cursor: pointer;
+  -webkit-tap-highlight-color: transparent;
+  outline: none;
+  border: none;
+  background: none;
+  padding: 0;
+}
+
+.neiki-cb__toggle:focus-visible .neiki-cb__toggle-track {
+  outline: 2px solid var(--ncb-accent);
+  outline-offset: 2px;
+}
+
+.neiki-cb__toggle-track {
+  position: absolute;
+  inset: 0;
+  background: var(--ncb-toggle-bg);
+  border-radius: 12px;
+  transition: background var(--ncb-transition);
+}
+
+.neiki-cb__toggle-knob {
+  position: absolute;
+  top: 2px;
+  left: 2px;
+  width: 20px;
+  height: 20px;
+  background: var(--ncb-toggle-knob);
+  border-radius: 50%;
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.15);
+  transition: transform var(--ncb-transition);
+}
+
+/* Active state */
+.neiki-cb__toggle--active .neiki-cb__toggle-track {
+  background: var(--ncb-toggle-bg-active);
+}
+
+.neiki-cb__toggle--active .neiki-cb__toggle-knob {
+  transform: translateX(20px);
+}
+
+/* Locked state */
+.neiki-cb__toggle--locked {
+  cursor: not-allowed;
+  opacity: 0.6;
+}
+
+.neiki-cb__toggle--locked .neiki-cb__toggle-track {
+  background: var(--ncb-toggle-locked-bg);
+}
+
+.neiki-cb__toggle--locked .neiki-cb__toggle-knob {
+  background: var(--ncb-toggle-locked-knob);
+}
+
+.neiki-cb__toggle--locked.neiki-cb__toggle--active .neiki-cb__toggle-track {
+  background: var(--ncb-toggle-bg-active);
+  opacity: 0.6;
+}
+
+/* ----------------------------------------------------------
+   12. Prefs actions
+   ---------------------------------------------------------- */
+.neiki-cb__prefs-actions {
+  display: flex;
+  gap: 10px;
+  margin-top: 16px;
+  padding-top: 16px;
+  border-top: 1px solid var(--ncb-border);
+}
+
+/* ----------------------------------------------------------
+   13. Countdown bar
+   ---------------------------------------------------------- */
+.neiki-cb__countdown {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 8px 16px;
+  background: var(--ncb-countdown-bg);
+  color: var(--ncb-countdown-text);
+  font-size: 0.85em;
+  font-weight: 500;
+  border-top: 1px solid var(--ncb-border);
+}
+
+.neiki-cb__countdown-bar {
+  flex: 1;
+  height: 4px;
+  background: rgba(0, 0, 0, 0.1);
+  border-radius: 2px;
+  overflow: hidden;
+}
+
+.neiki-cb__countdown-fill {
+  height: 100%;
+  background: var(--ncb-countdown-text);
+  border-radius: 2px;
+  transition: width 0.1s linear;
+}
+
+/* ----------------------------------------------------------
+   14. Animations
+   ---------------------------------------------------------- */
+
+/* --- Slide --- */
+.neiki-cb--anim-slide.neiki-cb--bottom,
+.neiki-cb--anim-slide.neiki-cb--bottom-left,
+.neiki-cb--anim-slide.neiki-cb--bottom-right {
+  transform: translateY(100%);
+  transition: transform 0.4s cubic-bezier(0.22, 1, 0.36, 1), opacity 0.3s ease;
+  opacity: 0;
+}
+
+.neiki-cb--anim-slide.neiki-cb--top {
+  transform: translateY(-100%);
+  transition: transform 0.4s cubic-bezier(0.22, 1, 0.36, 1), opacity 0.3s ease;
+  opacity: 0;
+}
+
+.neiki-cb--anim-slide.neiki-cb--visible {
+  transform: translateY(0);
+  opacity: 1;
+}
+
+/* Modal slide: scale up */
+.neiki-cb--modal.neiki-cb--anim-slide {
+  transform: none;
+}
+
+.neiki-cb--modal.neiki-cb--anim-slide .neiki-cb__container {
+  transform: translateY(30px) scale(0.96);
+  opacity: 0;
+  transition: transform 0.4s cubic-bezier(0.22, 1, 0.36, 1), opacity 0.3s ease;
+}
+
+.neiki-cb--modal.neiki-cb--anim-slide.neiki-cb--visible .neiki-cb__container {
+  transform: translateY(0) scale(1);
+  opacity: 1;
+}
+
+/* --- Fade --- */
+.neiki-cb--anim-fade {
+  opacity: 0;
+  transition: opacity 0.35s ease;
+}
+
+.neiki-cb--anim-fade.neiki-cb--visible {
+  opacity: 1;
+}
+
+/* --- None --- */
+.neiki-cb--anim-none {
+  opacity: 0;
+}
+
+.neiki-cb--anim-none.neiki-cb--visible {
+  opacity: 1;
+}
+
+/* ----------------------------------------------------------
+   15. Hidden state
+   ---------------------------------------------------------- */
+.neiki-cb--hidden {
+  pointer-events: none;
+  visibility: hidden;
+}
+
+.neiki-cb--visible {
+  pointer-events: auto;
+  visibility: visible;
+}
+
+/* ----------------------------------------------------------
+   16. Reduced motion
+   ---------------------------------------------------------- */
+@media (prefers-reduced-motion: reduce) {
+  .neiki-cb,
+  .neiki-cb *,
+  .neiki-cb *::before,
+  .neiki-cb *::after {
+    transition-duration: 0.01ms !important;
+    animation-duration: 0.01ms !important;
+  }
+}
+
+/* ----------------------------------------------------------
+   17. Responsive
+   ---------------------------------------------------------- */
+@media (max-width: 640px) {
+  .neiki-cb--bar .neiki-cb__main {
+    flex-direction: column;
+    align-items: stretch;
+    gap: 16px;
+    padding: 16px 20px;
+  }
+
+  .neiki-cb--bar .neiki-cb__actions {
+    flex-direction: column;
+  }
+
+  .neiki-cb--bar .neiki-cb__prefs,
+  .neiki-cb--bar .neiki-cb__prefs--open {
+    padding-left: 20px;
+    padding-right: 20px;
+  }
+
+  .neiki-cb--box {
+    max-width: none;
+    width: calc(100% - 16px);
+    left: 8px !important;
+    right: 8px !important;
+    bottom: 8px !important;
+  }
+
+  .neiki-cb--box.neiki-cb--top {
+    top: 8px !important;
+    bottom: auto !important;
+  }
+
+  .neiki-cb--modal {
+    padding: 8px;
+  }
+
+  .neiki-cb--modal .neiki-cb__main {
+    padding: 20px;
+  }
+
+  .neiki-cb__prefs-actions {
+    flex-direction: column;
+  }
+
+  .neiki-cb__category {
+    padding: 10px 8px;
+  }
+
+  .neiki-cb__category-icon {
+    width: 32px;
+    height: 32px;
+    font-size: 14px;
+  }
+}
+
+@media (max-width: 380px) {
+  .neiki-cb__btn {
+    padding: 10px 14px;
+    font-size: 13px;
+  }
+
+  .neiki-cb--bar .neiki-cb__actions,
+  .neiki-cb--modal .neiki-cb__actions {
+    flex-direction: column;
+  }
+}

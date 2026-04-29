@@ -1,0 +1,20 @@
+# Logs
+*.log
+
+# Env files
+.env
+
+# Temporary files
+*.tmp
+*.temp
+
+# OS files
+.DS_Store
+Thumbs.db
+
+# Wiki Folder
+wiki/
+
+# Minifier
+MINIFIER.txt
+minify.py

@@ -1,0 +1,53 @@
+{
+  "name": "neiki-cookie-banner",
+  "version": "1.0.0",
+  "description": "Production-ready GDPR cookie consent banner — zero dependencies",
+  "keywords": [
+    "cookie",
+    "cookie-banner",
+    "cookie-consent",
+    "gdpr",
+    "gdpr-compliance",
+    "consent",
+    "consent-management",
+    "privacy",
+    "eprivacy",
+    "vanilla-js",
+    "zero-dependencies",
+    "lightweight",
+    "accessible",
+    "aria",
+    "web-component",
+    "bar",
+    "modal",
+    "lightbox",
+    "customizable",
+    "theme",
+    "dark-mode",
+    "auto-accept",
+    "localStorage"
+  ],
+  "main": "dist/neiki-cookie-banner.js",
+  "exports": {
+    ".": "./dist/neiki-cookie-banner.js",
+    "./min": "./dist/neiki-cookie-banner.min.js",
+    "./style": "./dist/neiki-cookie-banner.css",
+    "./style/min": "./dist/neiki-cookie-banner.min.css"
+  },
+  "files": [
+    "dist"
+  ],
+  "style": "dist/neiki-cookie-banner.css",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/neiki/neiki-cookie-banner.git"
+  },
+  "bugs": {
+    "url": "https://github.com/neiki/neiki-cookie-banner/issues"
+  },
+  "unpkg": "dist/neiki-cookie-banner.min.js",
+  "jsdelivr": "dist/neiki-cookie-banner.min.js",
+  "homepage": "https://github.com/neiki/neiki-cookie-banner#readme",
+  "author": "Jindřich Stoklasa <jindrichstoklasa1@gmail.com>",
+  "license": "MIT"
+}

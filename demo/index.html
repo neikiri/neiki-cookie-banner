@@ -1,0 +1,223 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>neiki-cookie-banner — Demo</title>
+  <link rel="stylesheet" href="../src/neiki-cookie-banner.css">
+  <script src="../src/neiki-cookie-banner.js"></script>
+  <style>
+    *, *::before, *::after { box-sizing: border-box; }
+    body {
+      font-family: system-ui, -apple-system, sans-serif;
+      background: #f8fafc;
+      color: #1e293b;
+      margin: 0;
+      padding: 32px 24px 120px;
+      line-height: 1.6;
+    }
+    .demo-container { max-width: 780px; margin: 0 auto; }
+    h1 { font-size: 1.75rem; margin-bottom: 4px; }
+    .subtitle { color: #64748b; margin-bottom: 32px; }
+    h2 { font-size: 1.15rem; margin-top: 32px; margin-bottom: 12px; border-bottom: 1px solid #e2e8f0; padding-bottom: 8px; }
+
+    .btn-grid { display: flex; flex-wrap: wrap; gap: 10px; margin-bottom: 16px; }
+    .btn {
+      display: inline-flex; align-items: center; justify-content: center;
+      padding: 10px 18px; border: none; border-radius: 8px;
+      font-size: 14px; font-weight: 600; cursor: pointer;
+      transition: background 0.15s, transform 0.1s;
+      min-height: 44px;
+    }
+    .btn:active { transform: scale(0.97); }
+    .btn--primary { background: #2563eb; color: #fff; }
+    .btn--primary:hover { background: #1d4ed8; }
+    .btn--secondary { background: #e2e8f0; color: #334155; }
+    .btn--secondary:hover { background: #cbd5e1; }
+    .btn--danger { background: #ef4444; color: #fff; }
+    .btn--danger:hover { background: #dc2626; }
+
+    .consent-state {
+      background: #1e293b; color: #e2e8f0; border-radius: 10px;
+      padding: 16px 20px; font-family: 'SF Mono', 'Fira Code', monospace;
+      font-size: 13px; white-space: pre-wrap; word-break: break-all;
+      min-height: 80px; margin-top: 8px;
+      line-height: 1.55;
+    }
+
+    .log-box {
+      background: #0f172a; color: #94a3b8; border-radius: 10px;
+      padding: 16px 20px; font-family: 'SF Mono', 'Fira Code', monospace;
+      font-size: 12px; max-height: 200px; overflow-y: auto;
+      margin-top: 8px; line-height: 1.6;
+    }
+    .log-box .log-entry { margin-bottom: 2px; }
+    .log-box .log-label { color: #38bdf8; }
+    .log-box .log-value { color: #a5f3fc; }
+
+    footer { text-align: center; color: #94a3b8; font-size: 13px; margin-top: 48px; }
+    a { color: #2563eb; }
+  </style>
+</head>
+<body>
+  <div class="demo-container">
+    <h1>🍪 neiki-cookie-banner</h1>
+    <p class="subtitle">Production-ready GDPR cookie consent banner — demo page</p>
+
+    <!-- Layout demos -->
+    <h2>Layout Demos</h2>
+    <div class="btn-grid">
+      <button class="btn btn--primary" onclick="launchBar()">Bar (bottom)</button>
+      <button class="btn btn--primary" onclick="launchBarTop()">Bar (top)</button>
+      <button class="btn btn--primary" onclick="launchBox()">Box (bottom-right)</button>
+      <button class="btn btn--primary" onclick="launchBoxLeft()">Box (bottom-left)</button>
+      <button class="btn btn--primary" onclick="launchModal()">Modal (center)</button>
+    </div>
+
+    <!-- Theme demos -->
+    <h2>Theme Demos</h2>
+    <div class="btn-grid">
+      <button class="btn btn--secondary" onclick="launchTheme('light')">Light</button>
+      <button class="btn btn--secondary" onclick="launchTheme('dark')">Dark</button>
+      <button class="btn btn--secondary" onclick="launchTheme('auto')">Auto (system)</button>
+    </div>
+
+    <!-- Special features -->
+    <h2>Special Features</h2>
+    <div class="btn-grid">
+      <button class="btn btn--secondary" onclick="launchAutoAccept()">Auto-accept (5s countdown)</button>
+      <button class="btn btn--secondary" onclick="launchNoReject()">No "Reject All" button</button>
+      <button class="btn btn--secondary" onclick="launchCustomCats()">Custom categories</button>
+    </div>
+
+    <!-- Actions -->
+    <h2>Actions</h2>
+    <div class="btn-grid">
+      <button class="btn btn--danger" onclick="resetConsent()">Reset Consent</button>
+      <button class="btn btn--secondary" data-neiki-show-prefs>Open Cookie Settings (data-attr hook)</button>
+    </div>
+
+    <!-- Live consent state -->
+    <h2>Current Consent State</h2>
+    <div class="consent-state" id="consentState">No consent stored.</div>
+
+    <!-- Event log -->
+    <h2>Event Log</h2>
+    <div class="log-box" id="logBox"></div>
+
+    <footer>neiki-cookie-banner &copy; 2026 — MIT License</footer>
+  </div>
+
+  <script>
+    const stateEl = document.getElementById('consentState');
+    const logBox = document.getElementById('logBox');
+
+    function updateState() {
+      const consent = NeikiCookieBanner.getConsent();
+      stateEl.textContent = consent
+        ? JSON.stringify(consent, null, 2)
+        : 'No consent stored.';
+    }
+
+    function log(label, data) {
+      const entry = document.createElement('div');
+      entry.className = 'log-entry';
+      entry.innerHTML = '<span class="log-label">[' + label + ']</span> <span class="log-value">' +
+        (data !== undefined ? JSON.stringify(data) : '') + '</span>';
+      logBox.prepend(entry);
+    }
+
+    function commonCallbacks() {
+      return {
+        onAccept: function (cats) { log('onAccept', cats); updateState(); },
+        onReject: function () { log('onReject'); updateState(); },
+        onReady: function (consent) { log('onReady', consent.categories); updateState(); },
+        onChange: function (cats) { log('onChange', cats); },
+        onScriptsUnlock: function (cats) {
+          log('onScriptsUnlock', cats);
+          if (cats.analytics) {
+            log('info', 'Would load Google Analytics here');
+          }
+          if (cats.marketing) {
+            log('info', 'Would load Meta Pixel here');
+          }
+        }
+      };
+    }
+
+    // --- Launchers ---
+    function launchBar() {
+      NeikiCookieBanner.reset();
+      NeikiCookieBanner.init(Object.assign({ layout: 'bar', position: 'bottom', showAfterMs: 0, consentVersion: Date.now().toString() }, commonCallbacks()));
+    }
+
+    function launchBarTop() {
+      NeikiCookieBanner.reset();
+      NeikiCookieBanner.init(Object.assign({ layout: 'bar', position: 'top', showAfterMs: 0, consentVersion: Date.now().toString() }, commonCallbacks()));
+    }
+
+    function launchBox() {
+      NeikiCookieBanner.reset();
+      NeikiCookieBanner.init(Object.assign({ layout: 'box', position: 'bottom-right', showAfterMs: 0, consentVersion: Date.now().toString() }, commonCallbacks()));
+    }
+
+    function launchBoxLeft() {
+      NeikiCookieBanner.reset();
+      NeikiCookieBanner.init(Object.assign({ layout: 'box', position: 'bottom-left', showAfterMs: 0, consentVersion: Date.now().toString() }, commonCallbacks()));
+    }
+
+    function launchModal() {
+      NeikiCookieBanner.reset();
+      NeikiCookieBanner.init(Object.assign({
+        layout: 'modal', position: 'center', showAfterMs: 0,
+        lockScroll: true, closeOnOverlayClick: true,
+        consentVersion: Date.now().toString()
+      }, commonCallbacks()));
+    }
+
+    function launchTheme(theme) {
+      NeikiCookieBanner.reset();
+      NeikiCookieBanner.init(Object.assign({ layout: 'box', position: 'bottom-right', theme: theme, showAfterMs: 0, consentVersion: Date.now().toString() }, commonCallbacks()));
+    }
+
+    function launchAutoAccept() {
+      NeikiCookieBanner.reset();
+      NeikiCookieBanner.init(Object.assign({ layout: 'bar', position: 'bottom', autoAcceptAfterMs: 5000, showAfterMs: 0, consentVersion: Date.now().toString() }, commonCallbacks()));
+    }
+
+    function launchNoReject() {
+      NeikiCookieBanner.reset();
+      NeikiCookieBanner.init(Object.assign({ layout: 'bar', position: 'bottom', rejectAllText: '', showAfterMs: 0, consentVersion: Date.now().toString() }, commonCallbacks()));
+    }
+
+    function launchCustomCats() {
+      NeikiCookieBanner.reset();
+      NeikiCookieBanner.init(Object.assign({
+        layout: 'box', position: 'bottom-right', showAfterMs: 0,
+        consentVersion: Date.now().toString(),
+        categories: {
+          necessary: { label: 'Necessary', description: 'Essential cookies.', locked: true },
+          analytics: { label: 'Analytics', description: 'Track usage.', enabled: false },
+          social: { label: 'Social Media', description: 'Enable social sharing features.', enabled: false },
+          experiments: { label: 'A/B Testing', description: 'Help us test new features.', enabled: false }
+        }
+      }, commonCallbacks()));
+    }
+
+    function resetConsent() {
+      NeikiCookieBanner.reset();
+      log('reset', 'Consent cleared');
+      updateState();
+    }
+
+    // Initial state
+    updateState();
+
+    // Default init on first load
+    NeikiCookieBanner.init(Object.assign({
+      privacyPolicyUrl: '/privacy',
+      consentVersion: '1.0'
+    }, commonCallbacks()));
+  </script>
+</body>
+</html>
