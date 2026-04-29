@@ -1,7 +1,7 @@
 <h1 align="center">Neiki Cookie Banner</h1>
 
 <p align="center">
-  <img src="logo.png" alt="neiki-cookie-banner" width="400">
+  <img src="logo.png" alt="neiki-cookie-banner" width="650">
 </p>
 
 <p align="center">
