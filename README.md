@@ -1,8 +1,8 @@
-<h1 align="center">Neiki Cookie Banner</h1>
-
 <p align="center">
   <img src="logo.png" alt="neiki-cookie-banner" width="650">
 </p>
+
+<h1 align="center">Neiki's Cookie Banner</h1>
 
 <p align="center">
   <img src="https://img.shields.io/badge/javascript-%23323330.svg?style=for-the-badge&logo=javascript&logoColor=%23F7DF1E" alt="JavaScript">
@@ -31,7 +31,7 @@
 
 ## 📖 About
 
-**neiki-cookie-banner** is a lightweight, drop-in cookie consent solution for any
+**Neiki's Cookie Banner** is a lightweight, drop-in cookie consent solution for any
 website that needs to comply with GDPR, ePrivacy, and similar privacy
 regulations — without dragging in a heavy third-party SDK or tying your site
 to a paid SaaS.

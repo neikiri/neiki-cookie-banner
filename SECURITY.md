@@ -8,7 +8,7 @@
 
 ## Reporting a vulnerability
 
-If you discover a security vulnerability in **neiki-cookie-banner**, please
+If you discover a security vulnerability in **Neiki's Cookie Banner**, please
 **do not** open a public GitHub issue. Instead, report it privately so it can
 be investigated and patched before disclosure.
 
