@@ -29,6 +29,10 @@
 
 ---
 
+**Live demo:** [https://neiki.eu/cookie-banner](https://neiki.eu/cookie-banner)
+
+---
+
 ## 📖 About
 
 **Neiki's Cookie Banner** is a lightweight, drop-in cookie consent solution for any
