@@ -19,4 +19,5 @@ wiki/
 MINIFIER.txt
 minify.py
 
+# Photoshop files
 *.psd

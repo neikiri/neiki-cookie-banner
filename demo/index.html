@@ -8,63 +8,239 @@
   <script src="../src/neiki-cookie-banner.js"></script>
   <style>
     *, *::before, *::after { box-sizing: border-box; }
-    body {
-      font-family: system-ui, -apple-system, sans-serif;
-      background: #f8fafc;
-      color: #1e293b;
-      margin: 0;
-      padding: 32px 24px 120px;
-      line-height: 1.6;
-    }
-    .demo-container { max-width: 780px; margin: 0 auto; }
-    h1 { font-size: 1.75rem; margin-bottom: 4px; }
-    .subtitle { color: #64748b; margin-bottom: 32px; }
-    h2 { font-size: 1.15rem; margin-top: 32px; margin-bottom: 12px; border-bottom: 1px solid #e2e8f0; padding-bottom: 8px; }
 
-    .btn-grid { display: flex; flex-wrap: wrap; gap: 10px; margin-bottom: 16px; }
-    .btn {
-      display: inline-flex; align-items: center; justify-content: center;
-      padding: 10px 18px; border: none; border-radius: 8px;
-      font-size: 14px; font-weight: 600; cursor: pointer;
-      transition: background 0.15s, transform 0.1s;
-      min-height: 44px;
+    body {
+      font-family: system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+      background:
+        radial-gradient(circle at top left, rgba(88, 166, 255, 0.14), transparent 34%),
+        radial-gradient(circle at bottom right, rgba(37, 99, 235, 0.14), transparent 38%),
+        #0d1117;
+      color: #e6edf3;
+      margin: 0;
+      padding: 32px 24px 32px;
+      line-height: 1.6;
+      min-height: 100vh;
     }
-    .btn:active { transform: scale(0.97); }
-    .btn--primary { background: #2563eb; color: #fff; }
-    .btn--primary:hover { background: #1d4ed8; }
-    .btn--secondary { background: #e2e8f0; color: #334155; }
-    .btn--secondary:hover { background: #cbd5e1; }
-    .btn--danger { background: #ef4444; color: #fff; }
-    .btn--danger:hover { background: #dc2626; }
+
+    .demo-container {
+      max-width: 780px;
+      margin: 0 auto;
+    }
+
+    .heading {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+    }
+
+    .heading-left {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+    }
+
+    .github-btn {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      width: 42px;
+      height: 42px;
+      border-radius: 10px;
+      background: #161b22;
+      border: 1px solid #30363d;
+      transition: all 0.15s ease;
+    }
+
+    .github-btn:hover {
+      background: #21262d;
+      border-color: #58a6ff;
+      box-shadow: 0 0 12px rgba(88,166,255,0.25);
+    }
+
+    .github-btn svg {
+      width: 20px;
+      height: 20px;
+      fill: #c9d1d9;
+    }
+
+    .github-btn:hover svg {
+      fill: #58a6ff;
+    }
+
+    .logo-img {
+      filter: drop-shadow(0 0 14px rgba(88, 166, 255, 0.35));
+    }
+
+    .app-title {
+      font-size: 1.4rem;
+      font-weight: 800;
+      white-space: nowrap;
+      color: #58a6ff;
+      font-family: "JetBrains Mono", "SF Mono", monospace;
+      transform: translateY(2px);
+      letter-spacing: -0.02em;
+    }
+
+    .subtitle {
+      color: #8b949e;
+      margin: 0 0 34px;
+    }
+
+    h2 {
+      font-size: 1.05rem;
+      margin-top: 32px;
+      margin-bottom: 14px;
+      border-bottom: 1px solid #30363d;
+      padding-bottom: 8px;
+      color: #f0f6fc;
+    }
+
+    .btn-grid {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 10px;
+      margin-bottom: 16px;
+    }
+
+    .btn {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      padding: 10px 18px;
+      border: 1px solid transparent;
+      border-radius: 10px;
+      font-size: 14px;
+      font-weight: 700;
+      cursor: pointer;
+      min-height: 44px;
+      transition:
+        background 0.15s,
+        border-color 0.15s,
+        transform 0.1s,
+        box-shadow 0.15s;
+    }
+
+    .btn:active {
+      transform: scale(0.97);
+    }
+
+    .btn--primary {
+      background: #238636;
+      color: #fff;
+      border-color: rgba(255, 255, 255, 0.08);
+      box-shadow: 0 8px 22px rgba(35, 134, 54, 0.2);
+    }
+
+    .btn--primary:hover {
+      background: #2ea043;
+      box-shadow: 0 10px 28px rgba(35, 134, 54, 0.28);
+    }
+
+    .btn--secondary {
+      background: #21262d;
+      color: #c9d1d9;
+      border-color: #30363d;
+    }
+
+    .btn--secondary:hover {
+      background: #30363d;
+      color: #f0f6fc;
+      border-color: #484f58;
+    }
+
+    .btn--danger {
+      background: #da3633;
+      color: #fff;
+      border-color: rgba(255, 255, 255, 0.08);
+      box-shadow: 0 8px 22px rgba(218, 54, 51, 0.18);
+    }
+
+    .btn--danger:hover {
+      background: #f85149;
+      box-shadow: 0 10px 28px rgba(248, 81, 73, 0.25);
+    }
 
     .consent-state {
-      background: #1e293b; color: #e2e8f0; border-radius: 10px;
-      padding: 16px 20px; font-family: 'SF Mono', 'Fira Code', monospace;
-      font-size: 13px; white-space: pre-wrap; word-break: break-all;
-      min-height: 80px; margin-top: 8px;
+      background: #010409;
+      color: #c9d1d9;
+      border: 1px solid #30363d;
+      border-radius: 12px;
+      padding: 16px 20px;
+      font-family: "SF Mono", "Fira Code", "JetBrains Mono", monospace;
+      font-size: 13px;
+      white-space: pre-wrap;
+      word-break: break-all;
+      min-height: 80px;
+      margin-top: 8px;
       line-height: 1.55;
+      box-shadow: inset 0 0 0 1px rgba(255, 255, 255, 0.02);
     }
 
     .log-box {
-      background: #0f172a; color: #94a3b8; border-radius: 10px;
-      padding: 16px 20px; font-family: 'SF Mono', 'Fira Code', monospace;
-      font-size: 12px; max-height: 200px; overflow-y: auto;
-      margin-top: 8px; line-height: 1.6;
+      background: #010409;
+      color: #8b949e;
+      border: 1px solid #30363d;
+      border-radius: 12px;
+      padding: 16px 20px;
+      font-family: "SF Mono", "Fira Code", "JetBrains Mono", monospace;
+      font-size: 12px;
+      max-height: 200px;
+      overflow-y: auto;
+      margin-top: 8px;
+      line-height: 1.6;
+      box-shadow: inset 0 0 0 1px rgba(255, 255, 255, 0.02);
     }
-    .log-box .log-entry { margin-bottom: 2px; }
-    .log-box .log-label { color: #38bdf8; }
-    .log-box .log-value { color: #a5f3fc; }
 
-    footer { text-align: center; color: #94a3b8; font-size: 13px; margin-top: 48px; }
-    a { color: #2563eb; }
+    .log-box .log-entry {
+      margin-bottom: 2px;
+    }
+
+    .log-box .log-label {
+      color: #58a6ff;
+    }
+
+    .log-box .log-value {
+      color: #a5d6ff;
+    }
+
+    footer {
+      text-align: center;
+      color: #6e7681;
+      font-size: 13px;
+      margin-top: 48px;
+    }
+
+    a {
+      color: #58a6ff;
+    }
+
+    ::selection {
+      background: rgba(88, 166, 255, 0.3);
+    }
+    @media (max-width: 520px) {
+      .app-title {
+        font-size: clamp(1.1rem, 4vw, 1.4rem);
+      }
+    }
   </style>
 </head>
 <body>
   <div class="demo-container">
-    <h1>🍪 Neiki's Cookie Banner</h1>
+    <div class="heading">
+      <div class="heading-left">
+        <img src="icon.png" alt="Logo" class="logo-img" height="32">
+        <span class="app-title">Neiki's Cookie Banner</span>
+      </div>
+
+      <a href="https://github.com/neikiri/neiki-cookie-banner" target="_blank" class="github-btn">
+        <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-github" viewBox="0 0 16 16">
+          <path d="M8 0C3.58 0 0 3.58 0 8c0 3.54 2.29 6.53 5.47 7.59.4.07.55-.17.55-.38 0-.19-.01-.82-.01-1.49-2.01.37-2.53-.49-2.69-.94-.09-.23-.48-.94-.82-1.13-.28-.15-.68-.52-.01-.53.63-.01 1.08.58 1.23.82.72 1.21 1.87.87 2.33.66.07-.52.28-.87.51-1.07-1.78-.2-3.64-.89-3.64-3.95 0-.87.31-1.59.82-2.15-.08-.2-.36-1.02.08-2.12 0 0 .67-.21 2.2.82.64-.18 1.32-.27 2-.27s1.36.09 2 .27c1.53-1.04 2.2-.82 2.2-.82.44 1.1.16 1.92.08 2.12.51.56.82 1.27.82 2.15 0 3.07-1.87 3.75-3.65 3.95.29.25.54.73.54 1.48 0 1.07-.01 1.93-.01 2.2 0 .21.15.46.55.38A8.01 8.01 0 0 0 16 8c0-4.42-3.58-8-8-8"/>
+        </svg>
+      </a>
+    </div>
+
     <p class="subtitle">Production-ready GDPR cookie consent banner — demo page</p>
 
-    <!-- Layout demos -->
     <h2>Layout Demos</h2>
     <div class="btn-grid">
       <button class="btn btn--primary" onclick="launchBar()">Bar (bottom)</button>
@@ -74,7 +250,6 @@
       <button class="btn btn--primary" onclick="launchModal()">Modal (center)</button>
     </div>
 
-    <!-- Theme demos -->
     <h2>Theme Demos</h2>
     <div class="btn-grid">
       <button class="btn btn--secondary" onclick="launchTheme('light')">Light</button>
@@ -82,7 +257,6 @@
       <button class="btn btn--secondary" onclick="launchTheme('auto')">Auto (system)</button>
     </div>
 
-    <!-- Special features -->
     <h2>Special Features</h2>
     <div class="btn-grid">
       <button class="btn btn--secondary" onclick="launchAutoAccept()">Auto-accept (5s countdown)</button>
@@ -90,18 +264,15 @@
       <button class="btn btn--secondary" onclick="launchCustomCats()">Custom categories</button>
     </div>
 
-    <!-- Actions -->
     <h2>Actions</h2>
     <div class="btn-grid">
       <button class="btn btn--danger" onclick="resetConsent()">Reset Consent</button>
       <button class="btn btn--secondary" data-neiki-show-prefs>Open Cookie Settings (data-attr hook)</button>
     </div>
 
-    <!-- Live consent state -->
     <h2>Current Consent State</h2>
     <div class="consent-state" id="consentState">No consent stored.</div>
 
-    <!-- Event log -->
     <h2>Event Log</h2>
     <div class="log-box" id="logBox"></div>
 
@@ -122,22 +293,37 @@
     function log(label, data) {
       const entry = document.createElement('div');
       entry.className = 'log-entry';
-      entry.innerHTML = '<span class="log-label">[' + label + ']</span> <span class="log-value">' +
-        (data !== undefined ? JSON.stringify(data) : '') + '</span>';
+      entry.innerHTML =
+        '<span class="log-label">[' + label + ']</span> <span class="log-value">' +
+        (data !== undefined ? JSON.stringify(data) : '') +
+        '</span>';
       logBox.prepend(entry);
     }
 
     function commonCallbacks() {
       return {
-        onAccept: function (cats) { log('onAccept', cats); updateState(); },
-        onReject: function () { log('onReject'); updateState(); },
-        onReady: function (consent) { log('onReady', consent.categories); updateState(); },
-        onChange: function (cats) { log('onChange', cats); },
+        onAccept: function (cats) {
+          log('onAccept', cats);
+          updateState();
+        },
+        onReject: function () {
+          log('onReject');
+          updateState();
+        },
+        onReady: function (consent) {
+          log('onReady', consent.categories);
+          updateState();
+        },
+        onChange: function (cats) {
+          log('onChange', cats);
+        },
         onScriptsUnlock: function (cats) {
           log('onScriptsUnlock', cats);
+
           if (cats.analytics) {
             log('info', 'Would load Google Analytics here');
           }
+
           if (cats.marketing) {
             log('info', 'Would load Meta Pixel here');
           }
@@ -145,61 +331,119 @@
       };
     }
 
-    // --- Launchers ---
     function launchBar() {
       NeikiCookieBanner.reset();
-      NeikiCookieBanner.init(Object.assign({ layout: 'bar', position: 'bottom', showAfterMs: 0, consentVersion: Date.now().toString() }, commonCallbacks()));
+      NeikiCookieBanner.init(Object.assign({
+        layout: 'bar',
+        position: 'bottom',
+        showAfterMs: 0,
+        consentVersion: Date.now().toString()
+      }, commonCallbacks()));
     }
 
     function launchBarTop() {
       NeikiCookieBanner.reset();
-      NeikiCookieBanner.init(Object.assign({ layout: 'bar', position: 'top', showAfterMs: 0, consentVersion: Date.now().toString() }, commonCallbacks()));
+      NeikiCookieBanner.init(Object.assign({
+        layout: 'bar',
+        position: 'top',
+        showAfterMs: 0,
+        consentVersion: Date.now().toString()
+      }, commonCallbacks()));
     }
 
     function launchBox() {
       NeikiCookieBanner.reset();
-      NeikiCookieBanner.init(Object.assign({ layout: 'box', position: 'bottom-right', showAfterMs: 0, consentVersion: Date.now().toString() }, commonCallbacks()));
+      NeikiCookieBanner.init(Object.assign({
+        layout: 'box',
+        position: 'bottom-right',
+        showAfterMs: 0,
+        consentVersion: Date.now().toString()
+      }, commonCallbacks()));
     }
 
     function launchBoxLeft() {
       NeikiCookieBanner.reset();
-      NeikiCookieBanner.init(Object.assign({ layout: 'box', position: 'bottom-left', showAfterMs: 0, consentVersion: Date.now().toString() }, commonCallbacks()));
+      NeikiCookieBanner.init(Object.assign({
+        layout: 'box',
+        position: 'bottom-left',
+        showAfterMs: 0,
+        consentVersion: Date.now().toString()
+      }, commonCallbacks()));
     }
 
     function launchModal() {
       NeikiCookieBanner.reset();
       NeikiCookieBanner.init(Object.assign({
-        layout: 'modal', position: 'center', showAfterMs: 0,
-        lockScroll: true, closeOnOverlayClick: true,
+        layout: 'modal',
+        position: 'center',
+        showAfterMs: 0,
+        lockScroll: true,
+        closeOnOverlayClick: true,
         consentVersion: Date.now().toString()
       }, commonCallbacks()));
     }
 
     function launchTheme(theme) {
       NeikiCookieBanner.reset();
-      NeikiCookieBanner.init(Object.assign({ layout: 'box', position: 'bottom-right', theme: theme, showAfterMs: 0, consentVersion: Date.now().toString() }, commonCallbacks()));
+      NeikiCookieBanner.init(Object.assign({
+        layout: 'box',
+        position: 'bottom-right',
+        theme: theme,
+        showAfterMs: 0,
+        consentVersion: Date.now().toString()
+      }, commonCallbacks()));
     }
 
     function launchAutoAccept() {
       NeikiCookieBanner.reset();
-      NeikiCookieBanner.init(Object.assign({ layout: 'bar', position: 'bottom', autoAcceptAfterMs: 5000, showAfterMs: 0, consentVersion: Date.now().toString() }, commonCallbacks()));
+      NeikiCookieBanner.init(Object.assign({
+        layout: 'bar',
+        position: 'bottom',
+        autoAcceptAfterMs: 5000,
+        showAfterMs: 0,
+        consentVersion: Date.now().toString()
+      }, commonCallbacks()));
     }
 
     function launchNoReject() {
       NeikiCookieBanner.reset();
-      NeikiCookieBanner.init(Object.assign({ layout: 'bar', position: 'bottom', rejectAllText: '', showAfterMs: 0, consentVersion: Date.now().toString() }, commonCallbacks()));
+      NeikiCookieBanner.init(Object.assign({
+        layout: 'bar',
+        position: 'bottom',
+        rejectAllText: '',
+        showAfterMs: 0,
+        consentVersion: Date.now().toString()
+      }, commonCallbacks()));
     }
 
     function launchCustomCats() {
       NeikiCookieBanner.reset();
       NeikiCookieBanner.init(Object.assign({
-        layout: 'box', position: 'bottom-right', showAfterMs: 0,
+        layout: 'box',
+        position: 'bottom-right',
+        showAfterMs: 0,
         consentVersion: Date.now().toString(),
         categories: {
-          necessary: { label: 'Necessary', description: 'Essential cookies.', locked: true },
-          analytics: { label: 'Analytics', description: 'Track usage.', enabled: false },
-          social: { label: 'Social Media', description: 'Enable social sharing features.', enabled: false },
-          experiments: { label: 'A/B Testing', description: 'Help us test new features.', enabled: false }
+          necessary: {
+            label: 'Necessary',
+            description: 'Essential cookies.',
+            locked: true
+          },
+          analytics: {
+            label: 'Analytics',
+            description: 'Track usage.',
+            enabled: false
+          },
+          social: {
+            label: 'Social Media',
+            description: 'Enable social sharing features.',
+            enabled: false
+          },
+          experiments: {
+            label: 'A/B Testing',
+            description: 'Help us test new features.',
+            enabled: false
+          }
         }
       }, commonCallbacks()));
     }
@@ -210,10 +454,8 @@
       updateState();
     }
 
-    // Initial state
     updateState();
 
-    // Default init on first load
     NeikiCookieBanner.init(Object.assign({
       privacyPolicyUrl: '/privacy',
       consentVersion: '1.0'
