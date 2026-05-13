@@ -257,16 +257,23 @@
       <button class="btn btn--secondary" onclick="launchTheme('auto')">Auto (system)</button>
     </div>
 
+    <h2>Language / i18n</h2>
+    <div class="btn-grid">
+      <button class="btn btn--secondary" onclick="launchLang('en')">English</button>
+      <button class="btn btn--secondary" onclick="launchLang('cs')">Čeština</button>
+    </div>
+
     <h2>Special Features</h2>
     <div class="btn-grid">
-      <button class="btn btn--secondary" onclick="launchAutoAccept()">Auto-accept (5s countdown)</button>
       <button class="btn btn--secondary" onclick="launchNoReject()">No "Reject All" button</button>
       <button class="btn btn--secondary" onclick="launchCustomCats()">Custom categories</button>
+      <button class="btn btn--secondary" onclick="launchGCM()">Google Consent Mode v2</button>
     </div>
 
     <h2>Actions</h2>
     <div class="btn-grid">
       <button class="btn btn--danger" onclick="resetConsent()">Reset Consent</button>
+      <button class="btn btn--danger" onclick="revokeConsent()">Revoke Consent (GDPR withdraw)</button>
       <button class="btn btn--secondary" data-neiki-show-prefs>Open Cookie Settings (data-attr hook)</button>
     </div>
 
@@ -327,6 +334,10 @@
           if (cats.marketing) {
             log('info', 'Would load Meta Pixel here');
           }
+        },
+        onRevoke: function (prev) {
+          log('onRevoke', prev ? prev.categories : null);
+          updateState();
         }
       };
     }
@@ -394,15 +405,28 @@
       }, commonCallbacks()));
     }
 
-    function launchAutoAccept() {
+    function launchLang(lang) {
       NeikiCookieBanner.reset();
       NeikiCookieBanner.init(Object.assign({
+        language: lang,
         layout: 'bar',
         position: 'bottom',
-        autoAcceptAfterMs: 5000,
         showAfterMs: 0,
         consentVersion: Date.now().toString()
       }, commonCallbacks()));
+    }
+
+    function launchGCM() {
+      NeikiCookieBanner.reset();
+      NeikiCookieBanner.init(Object.assign({
+        layout: 'modal',
+        position: 'center',
+        showAfterMs: 0,
+        lockScroll: true,
+        googleConsentMode: true,
+        consentVersion: Date.now().toString()
+      }, commonCallbacks()));
+      log('info', 'Google Consent Mode v2 enabled — default denied pushed');
     }
 
     function launchNoReject() {
@@ -454,12 +478,26 @@
       updateState();
     }
 
+    function revokeConsent() {
+      NeikiCookieBanner.revoke();
+      log('revoke', 'Consent withdrawn (GDPR revoke)');
+      updateState();
+    }
+
     updateState();
 
     NeikiCookieBanner.init(Object.assign({
       privacyPolicyUrl: '/privacy',
       consentVersion: '1.0'
     }, commonCallbacks()));
+  </script>
+
+  <!-- Blocked scripts — only unlocked after consent is given for their category -->
+  <script type="text/plain" data-category="analytics">
+    console.log('[DEMO] Analytics script unlocked and running!');
+  </script>
+  <script type="text/plain" data-category="marketing">
+    console.log('[DEMO] Marketing script unlocked and running!');
   </script>
 </body>
 </html>

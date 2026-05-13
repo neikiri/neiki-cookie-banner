@@ -31,8 +31,6 @@
   --ncb-toggle-locked-bg: #e5e7eb;
   --ncb-toggle-locked-knob: #9ca3af;
   --ncb-category-hover: #f9fafb;
-  --ncb-countdown-bg: #fef3c7;
-  --ncb-countdown-text: #92400e;
 }
 
 /* ----------------------------------------------------------
@@ -54,8 +52,6 @@
   --ncb-toggle-locked-bg: #374151;
   --ncb-toggle-locked-knob: #6b7280;
   --ncb-category-hover: #283344;
-  --ncb-countdown-bg: #451a03;
-  --ncb-countdown-text: #fbbf24;
 }
 
 /* Auto theme via prefers-color-scheme */
@@ -76,8 +72,6 @@
     --ncb-toggle-locked-bg: #374151;
     --ncb-toggle-locked-knob: #6b7280;
     --ncb-category-hover: #283344;
-    --ncb-countdown-bg: #451a03;
-    --ncb-countdown-text: #fbbf24;
   }
 }
 
@@ -508,37 +502,7 @@ body.neiki-cb-lock-scroll {
 }
 
 /* ----------------------------------------------------------
-   13. Countdown bar
-   ---------------------------------------------------------- */
-.neiki-cb__countdown {
-  display: flex;
-  align-items: center;
-  gap: 8px;
-  padding: 8px 16px;
-  background: var(--ncb-countdown-bg);
-  color: var(--ncb-countdown-text);
-  font-size: 0.85em;
-  font-weight: 500;
-  border-top: 1px solid var(--ncb-border);
-}
-
-.neiki-cb__countdown-bar {
-  flex: 1;
-  height: 4px;
-  background: rgba(0, 0, 0, 0.1);
-  border-radius: 2px;
-  overflow: hidden;
-}
-
-.neiki-cb__countdown-fill {
-  height: 100%;
-  background: var(--ncb-countdown-text);
-  border-radius: 2px;
-  transition: width 0.1s linear;
-}
-
-/* ----------------------------------------------------------
-   14. Animations
+   13. Animations
    ---------------------------------------------------------- */
 
 /* --- Slide --- */
@@ -597,7 +561,7 @@ body.neiki-cb-lock-scroll {
 }
 
 /* ----------------------------------------------------------
-   15. Hidden state
+   14. Hidden state
    ---------------------------------------------------------- */
 .neiki-cb--hidden {
   pointer-events: none;
@@ -610,7 +574,7 @@ body.neiki-cb-lock-scroll {
 }
 
 /* ----------------------------------------------------------
-   16. Reduced motion
+   15. Reduced motion
    ---------------------------------------------------------- */
 @media (prefers-reduced-motion: reduce) {
   .neiki-cb,
@@ -623,7 +587,7 @@ body.neiki-cb-lock-scroll {
 }
 
 /* ----------------------------------------------------------
-   17. Responsive
+   16. Responsive
    ---------------------------------------------------------- */
 @media (max-width: 640px) {
   .neiki-cb--bar .neiki-cb__main {

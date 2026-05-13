@@ -1,7 +1,7 @@
 /* ============================================================
    neiki-cookie-banner.js
-   Production-ready GDPR cookie consent banner
-   Version: 1.0.0
+   Production-ready GDPR / ePrivacy cookie consent banner
+   Version: 2.0.0
    No dependencies — vanilla ES2017+
    ============================================================ */
 (function () {
@@ -21,55 +21,136 @@
     _default: '\u{1F4CB}'
   });
 
+  /* ----------------------------------------------------------
+     i18n translation tables
+     ---------------------------------------------------------- */
+  const I18N = {
+    en: {
+      title: 'We use cookies',
+      description: 'We use cookies to enhance your browsing experience, serve personalized ads or content, and analyze our traffic. By clicking \u201CAccept All\u201D, you consent to our use of cookies.',
+      privacyPolicyText: 'Privacy Policy',
+      acceptAllText: 'Accept All',
+      rejectAllText: 'Reject All',
+      customizeText: 'Customize',
+      savePreferencesText: 'Save Preferences',
+      managePreferencesTitle: 'Manage Preferences',
+      categories: {
+        necessary: {
+          label: 'Necessary',
+          description: 'Essential for the website to function. Cannot be disabled.'
+        },
+        analytics: {
+          label: 'Analytics',
+          description: 'Help us understand how visitors interact with our website.'
+        },
+        marketing: {
+          label: 'Marketing',
+          description: 'Used to track visitors and display relevant ads.'
+        },
+        preferences: {
+          label: 'Preferences',
+          description: 'Remember your settings and personalizations.'
+        }
+      }
+    },
+    cs: {
+      title: 'Pou\u017E\u00EDv\u00E1me cookies',
+      description: 'Pou\u017E\u00EDv\u00E1me cookies ke zlep\u0161en\u00ED va\u0161eho z\u00E1\u017Eitku z prohl\u00ED\u017Een\u00ED, zobrazov\u00E1n\u00ED personalizovan\u00FDch reklam \u010Di obsahu a anal\u00FDze na\u0161\u00ED n\u00E1v\u0161t\u011Bvnosti. Kliknut\u00EDm na \u201EP\u0159ijmout v\u0161e\u201C souhlas\u00EDte s pou\u017Eit\u00EDm cookies.',
+      privacyPolicyText: 'Z\u00E1sady ochrany osobn\u00EDch \u00FAdaj\u016F',
+      acceptAllText: 'P\u0159ijmout v\u0161e',
+      rejectAllText: 'Odm\u00EDtnout v\u0161e',
+      customizeText: 'Upravit',
+      savePreferencesText: 'Ulo\u017Eit nastaven\u00ED',
+      managePreferencesTitle: 'Spr\u00E1va preferenc\u00ED',
+      categories: {
+        necessary: {
+          label: 'Nezbytn\u00E9',
+          description: 'Nezbytn\u00E9 pro fungov\u00E1n\u00ED webu. Nelze deaktivovat.'
+        },
+        analytics: {
+          label: 'Analytick\u00E9',
+          description: 'Pom\u00E1haj\u00ED n\u00E1m porozum\u011Bt, jak n\u00E1v\u0161t\u011Bvn\u00EDci pou\u017E\u00EDvaj\u00ED na\u0161e str\u00E1nky.'
+        },
+        marketing: {
+          label: 'Marketingov\u00E9',
+          description: 'Slou\u017E\u00ED ke sledov\u00E1n\u00ED n\u00E1v\u0161t\u011Bvn\u00EDk\u016F a zobrazov\u00E1n\u00ED relevantn\u00EDch reklam.'
+        },
+        preferences: {
+          label: 'Preferen\u010Dn\u00ED',
+          description: 'Zapamatuj\u00ED si va\u0161e nastaven\u00ED a personalizace.'
+        }
+      }
+    }
+  };
+
+  /* ----------------------------------------------------------
+     i18n helper — resolve a translation key
+     ---------------------------------------------------------- */
+  function t(lang, key, fallback) {
+    const table = I18N[lang] || I18N.en;
+    if (table[key] !== undefined) return table[key];
+    if (I18N.en[key] !== undefined) return I18N.en[key];
+    return fallback !== undefined ? fallback : key;
+  }
+
+  function tCat(lang, catKey, prop) {
+    var table = I18N[lang] || I18N.en;
+    if (table.categories && table.categories[catKey] && table.categories[catKey][prop] !== undefined) {
+      return table.categories[catKey][prop];
+    }
+    table = I18N.en;
+    if (table.categories && table.categories[catKey] && table.categories[catKey][prop] !== undefined) {
+      return table.categories[catKey][prop];
+    }
+    return undefined;
+  }
+
   const DEFAULTS = Object.freeze({
-    title: 'We use cookies',
-    description: 'We use cookies to enhance your browsing experience, serve personalized ads or content, and analyze our traffic. By clicking \u201CAccept All\u201D, you consent to our use of cookies.',
+    language: 'en',
+
+    title: '',
+    description: '',
     privacyPolicyUrl: '',
-    privacyPolicyText: 'Privacy Policy',
+    privacyPolicyText: '',
 
     categories: {
       necessary: {
-        label: 'Necessary',
-        description: 'Essential for the website to function. Cannot be disabled.',
         locked: true
       },
       analytics: {
-        label: 'Analytics',
-        description: 'Help us understand how visitors interact with our website.',
         enabled: false
       },
       marketing: {
-        label: 'Marketing',
-        description: 'Used to track visitors and display relevant ads.',
         enabled: false
       },
       preferences: {
-        label: 'Preferences',
-        description: 'Remember your settings and personalizations.',
         enabled: false
       }
     },
 
-    acceptAllText: 'Accept All',
-    rejectAllText: 'Reject All',
-    customizeText: 'Customize',
-    savePreferencesText: 'Save Preferences',
+    acceptAllText: '',
+    rejectAllText: '',
+    customizeText: '',
+    savePreferencesText: '',
+    managePreferencesTitle: '',
 
     position: 'bottom',
     layout: 'bar',
     showAfterMs: 300,
-    autoAcceptAfterMs: 0,
     closeOnOverlayClick: false,
     lockScroll: false,
     animationIn: 'slide',
 
     consentVersion: '1.0',
 
+    googleConsentMode: false,
+
     onAccept: function () {},
     onReject: function () {},
     onReady: function () {},
     onChange: function () {},
     onScriptsUnlock: function () {},
+    onRevoke: function () {},
 
     theme: 'light',
     zIndex: 9999
@@ -209,24 +290,138 @@
   }
 
   /* ----------------------------------------------------------
+     Google Consent Mode v2 helpers
+     ---------------------------------------------------------- */
+  function gtagAvailable() {
+    return typeof window.gtag === 'function';
+  }
+
+  function pushGCMDefault() {
+    window.dataLayer = window.dataLayer || [];
+    function gtag() { window.dataLayer.push(arguments); }
+    if (!gtagAvailable()) {
+      window.gtag = gtag;
+    }
+    window.gtag('consent', 'default', {
+      'ad_storage': 'denied',
+      'ad_user_data': 'denied',
+      'ad_personalization': 'denied',
+      'analytics_storage': 'denied',
+      'functionality_storage': 'denied',
+      'personalization_storage': 'denied',
+      'security_storage': 'granted'
+    });
+  }
+
+  function updateGCM(categories) {
+    if (!gtagAvailable()) return;
+    window.gtag('consent', 'update', {
+      'ad_storage': categories.marketing ? 'granted' : 'denied',
+      'ad_user_data': categories.marketing ? 'granted' : 'denied',
+      'ad_personalization': categories.marketing ? 'granted' : 'denied',
+      'analytics_storage': categories.analytics ? 'granted' : 'denied',
+      'functionality_storage': categories.preferences ? 'granted' : 'denied',
+      'personalization_storage': categories.preferences ? 'granted' : 'denied',
+      'security_storage': 'granted'
+    });
+  }
+
+  function revokeGCM() {
+    if (!gtagAvailable()) return;
+    window.gtag('consent', 'update', {
+      'ad_storage': 'denied',
+      'ad_user_data': 'denied',
+      'ad_personalization': 'denied',
+      'analytics_storage': 'denied',
+      'functionality_storage': 'denied',
+      'personalization_storage': 'denied',
+      'security_storage': 'granted'
+    });
+  }
+
+  /* ----------------------------------------------------------
+     Script blocking / unlocking helpers
+     ---------------------------------------------------------- */
+  function unlockScripts(category) {
+    var scripts = document.querySelectorAll('script[type="text/plain"][data-category="' + category + '"]');
+    for (var i = 0; i < scripts.length; i++) {
+      var old = scripts[i];
+      if (old.getAttribute('data-ncb-unlocked') === 'true') continue;
+      var ns = document.createElement('script');
+      /* Copy attributes except type and data-category */
+      for (var j = 0; j < old.attributes.length; j++) {
+        var attr = old.attributes[j];
+        if (attr.name === 'type' || attr.name === 'data-category') continue;
+        ns.setAttribute(attr.name, attr.value);
+      }
+      ns.setAttribute('data-ncb-unlocked', 'true');
+      ns.setAttribute('data-category', category);
+      /* If there is inline content, copy it */
+      if (!old.src && old.textContent.trim()) {
+        ns.textContent = old.textContent;
+      }
+      old.parentNode.replaceChild(ns, old);
+    }
+  }
+
+  function relockScripts(category) {
+    var scripts = document.querySelectorAll('script[data-ncb-unlocked="true"][data-category="' + category + '"]');
+    for (var i = 0; i < scripts.length; i++) {
+      scripts[i].remove();
+    }
+  }
+
+  function unlockAllAccepted(categories) {
+    for (var cat in categories) {
+      if (categories[cat] === true) {
+        unlockScripts(cat);
+      }
+    }
+  }
+
+  /* ----------------------------------------------------------
      Main Banner Class
      ---------------------------------------------------------- */
   function Banner(config) {
     this.config = deepMerge(DEFAULTS, config || {});
+    this.lang = this.config.language || 'en';
+    this._resolveTexts();
     this.root = null;
     this.prefsPanel = null;
     this.prefsOpen = false;
     this.isVisible = false;
     this.focusTrap = null;
     this.previousFocus = null;
-    this.autoAcceptTimer = null;
-    this.autoAcceptCountdownEl = null;
-    this.autoAcceptRemaining = 0;
-    this.autoAcceptInterval = null;
     this.toggleStates = {};
 
     this._initToggleStates();
   }
+
+  Banner.prototype._resolveTexts = function () {
+    var cfg = this.config;
+    var lang = this.lang;
+    if (!cfg.title) cfg.title = t(lang, 'title');
+    if (!cfg.description) cfg.description = t(lang, 'description');
+    if (!cfg.privacyPolicyText) cfg.privacyPolicyText = t(lang, 'privacyPolicyText');
+    if (!cfg.acceptAllText) cfg.acceptAllText = t(lang, 'acceptAllText');
+    if (!cfg.rejectAllText) cfg.rejectAllText = t(lang, 'rejectAllText');
+    if (!cfg.customizeText) cfg.customizeText = t(lang, 'customizeText');
+    if (!cfg.savePreferencesText) cfg.savePreferencesText = t(lang, 'savePreferencesText');
+    if (!cfg.managePreferencesTitle) cfg.managePreferencesTitle = t(lang, 'managePreferencesTitle');
+
+    /* Resolve per-category texts from i18n if not overridden */
+    var cats = cfg.categories;
+    for (var key in cats) {
+      if (!cats[key].label) {
+        var lbl = tCat(lang, key, 'label');
+        if (lbl) cats[key].label = lbl;
+      }
+      if (!cats[key].description) {
+        var desc = tCat(lang, key, 'description');
+        if (desc) cats[key].description = desc;
+      }
+    }
+  };
 
   Banner.prototype._initToggleStates = function () {
     const cats = this.config.categories;
@@ -378,12 +573,6 @@
     this.prefsPanel = this._renderPrefsPanel();
     container.appendChild(this.prefsPanel);
 
-    /* Countdown (auto-accept) */
-    if (cfg.autoAcceptAfterMs > 0) {
-      this.autoAcceptCountdownEl = this._renderCountdown();
-      container.appendChild(this.autoAcceptCountdownEl);
-    }
-
     this.root.appendChild(container);
     document.body.appendChild(this.root);
 
@@ -405,7 +594,7 @@
       'aria-hidden': cfg.layout === 'modal' ? 'false' : 'true'
     });
 
-    const title = el('div', { className: 'neiki-cb__prefs-title', textContent: 'Manage Preferences' });
+    const title = el('div', { className: 'neiki-cb__prefs-title', textContent: cfg.managePreferencesTitle });
     panel.appendChild(title);
 
     const cats = cfg.categories;
@@ -491,21 +680,6 @@
     return row;
   };
 
-  Banner.prototype._renderCountdown = function () {
-    const wrapper = el('div', { className: 'neiki-cb__countdown' });
-    const label = el('span', { textContent: 'Auto-accepting in ' });
-    const time = el('span', { className: 'neiki-cb__countdown-time' });
-    const bar = el('div', { className: 'neiki-cb__countdown-bar' });
-    const fill = el('div', { className: 'neiki-cb__countdown-fill', style: 'width:100%' });
-    bar.appendChild(fill);
-    wrapper.appendChild(label);
-    wrapper.appendChild(time);
-    wrapper.appendChild(bar);
-    wrapper._time = time;
-    wrapper._fill = fill;
-    return wrapper;
-  };
-
   Banner.prototype._escapeHtml = function (str) {
     const div = document.createElement('div');
     div.textContent = str;
@@ -544,15 +718,11 @@
     if (this.config.layout === 'modal') {
       this.focusTrap.activate();
     }
-
-    this._startAutoAccept();
   };
 
   Banner.prototype.hide = function () {
     const self = this;
     if (!this.root) return;
-
-    this._stopAutoAccept();
 
     this.root.classList.remove('neiki-cb--visible');
     this.isVisible = false;
@@ -594,8 +764,10 @@
      ---------------------------------------------------------- */
   Banner.prototype._acceptAll = function () {
     const categories = this._buildCategories(true);
-    const consent = this._saveConsent(categories);
+    this._saveConsent(categories);
     this.hide();
+    if (this.config.googleConsentMode) updateGCM(categories);
+    unlockAllAccepted(categories);
     this.config.onAccept(categories);
     this.config.onChange(categories);
     this.config.onScriptsUnlock(categories);
@@ -603,57 +775,22 @@
 
   Banner.prototype._reject = function () {
     const categories = this._buildRejectedCategories();
-    const consent = this._saveConsent(categories);
+    this._saveConsent(categories);
     this.hide();
+    if (this.config.googleConsentMode) updateGCM(categories);
     this.config.onReject();
     this.config.onChange(categories);
   };
 
   Banner.prototype._savePrefs = function () {
     const categories = this._buildCategories(false);
-    const consent = this._saveConsent(categories);
+    this._saveConsent(categories);
     this.hide();
+    if (this.config.googleConsentMode) updateGCM(categories);
+    unlockAllAccepted(categories);
     this.config.onAccept(categories);
     this.config.onChange(categories);
     this.config.onScriptsUnlock(categories);
-  };
-
-  /* ----------------------------------------------------------
-     Auto-accept countdown
-     ---------------------------------------------------------- */
-  Banner.prototype._startAutoAccept = function () {
-    const self = this;
-    const ms = this.config.autoAcceptAfterMs;
-    if (!ms || ms <= 0) return;
-
-    this.autoAcceptRemaining = ms;
-    const total = ms;
-    const el = this.autoAcceptCountdownEl;
-    if (!el) return;
-
-    function update() {
-      const secs = Math.ceil(self.autoAcceptRemaining / 1000);
-      if (el._time) el._time.textContent = secs + 's';
-      if (el._fill) el._fill.style.width = (self.autoAcceptRemaining / total * 100) + '%';
-    }
-
-    update();
-
-    this.autoAcceptInterval = setInterval(function () {
-      self.autoAcceptRemaining -= 100;
-      update();
-      if (self.autoAcceptRemaining <= 0) {
-        self._stopAutoAccept();
-        self._acceptAll();
-      }
-    }, 100);
-  };
-
-  Banner.prototype._stopAutoAccept = function () {
-    if (this.autoAcceptInterval) {
-      clearInterval(this.autoAcceptInterval);
-      this.autoAcceptInterval = null;
-    }
   };
 
   /* ----------------------------------------------------------
@@ -662,14 +799,24 @@
   let instance = null;
 
   const NeikiCookieBanner = {
+    /**
+     * Initialise the cookie banner.
+     * autoAcceptAfterMs is intentionally NOT supported — GDPR requires
+     * explicit, freely given consent for analytics/marketing cookies.
+     */
     init: function (config) {
       storageAvailable = testStorage();
       if (!storageAvailable) {
         console.warn('[neiki-cookie-banner] localStorage unavailable, falling back to in-memory storage.');
       }
 
+      /* Strip autoAcceptAfterMs — not GDPR compliant */
+      if (config && config.autoAcceptAfterMs) {
+        console.warn('[neiki-cookie-banner] autoAcceptAfterMs is disabled for GDPR compliance. Consent must be explicit.');
+        delete config.autoAcceptAfterMs;
+      }
+
       if (instance) {
-        instance._stopAutoAccept();
         if (instance.root) {
           instance.root.remove();
           instance.root = null;
@@ -682,8 +829,16 @@
 
       instance = new Banner(config);
 
+      /* Google Consent Mode v2: push default denied before any scripts */
+      if (instance.config.googleConsentMode) {
+        pushGCMDefault();
+      }
+
       const existing = instance._loadConsent();
       if (existing && existing.version === instance.config.consentVersion) {
+        /* Re-apply GCM + unlock scripts for already-consented categories */
+        if (instance.config.googleConsentMode) updateGCM(existing.categories);
+        unlockAllAccepted(existing.categories);
         instance.config.onReady(existing);
         return;
       }
@@ -730,6 +885,38 @@
       }
     },
 
+    /**
+     * Revoke / withdraw consent.
+     * Removes stored consent, re-blocks GCM, removes unlocked scripts,
+     * fires onRevoke callback, and optionally re-opens the banner.
+     */
+    revoke: function (reopenBanner) {
+      var consent = NeikiCookieBanner.getConsent();
+      storageRemove(STORAGE_KEY);
+
+      /* Re-block tracking via GCM */
+      if (instance && instance.config.googleConsentMode) {
+        revokeGCM();
+      }
+
+      /* Remove previously unlocked scripts */
+      if (consent && consent.categories) {
+        for (var cat in consent.categories) {
+          if (consent.categories[cat] === true && cat !== 'necessary') {
+            relockScripts(cat);
+          }
+        }
+      }
+
+      if (instance) {
+        instance.config.onRevoke(consent);
+      }
+
+      if (reopenBanner !== false) {
+        NeikiCookieBanner.show();
+      }
+    },
+
     hasConsented: function () {
       const consent = NeikiCookieBanner.getConsent();
       return consent !== null;
@@ -739,6 +926,27 @@
       const consent = NeikiCookieBanner.getConsent();
       if (!consent || !consent.categories) return false;
       return consent.categories[category] === true;
+    },
+
+    /**
+     * Manually unlock blocked scripts for a specific category.
+     */
+    unlockScripts: function (category) {
+      unlockScripts(category);
+    },
+
+    /**
+     * Register or replace an i18n translation table.
+     */
+    addTranslation: function (langCode, table) {
+      I18N[langCode] = table;
+    },
+
+    /**
+     * Get current translations for a language.
+     */
+    getTranslation: function (langCode) {
+      return I18N[langCode] || null;
     }
   };
 
@@ -782,9 +990,10 @@
         if (ds.animationIn) cfg.animationIn = ds.animationIn;
         if (ds.zIndex) cfg.zIndex = parseInt(ds.zIndex, 10);
         if (ds.showAfterMs) cfg.showAfterMs = parseInt(ds.showAfterMs, 10);
-        if (ds.autoAcceptAfterMs) cfg.autoAcceptAfterMs = parseInt(ds.autoAcceptAfterMs, 10);
         if (ds.lockScroll !== undefined) cfg.lockScroll = ds.lockScroll === 'true';
         if (ds.closeOnOverlayClick !== undefined) cfg.closeOnOverlayClick = ds.closeOnOverlayClick === 'true';
+        if (ds.language) cfg.language = ds.language;
+        if (ds.googleConsentMode !== undefined) cfg.googleConsentMode = ds.googleConsentMode === 'true';
 
         NeikiCookieBanner.init(cfg);
       }

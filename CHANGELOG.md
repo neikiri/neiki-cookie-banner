@@ -7,6 +7,83 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ---
 
+## [2.0.0] — 2026-05-13
+
+Major release focused on **full GDPR / ePrivacy compliance** for EU (CZ/EU) websites.
+The banner can now serve as a production-ready cookie consent solution without any
+external CMP dependency.
+
+### Added
+
+#### i18n system
+- Built-in translation table architecture with `language` config option.
+- **English** (`en`) — default language.
+- **Czech** (`cs`) — complete translation of all UI strings (title, description,
+  buttons, category labels, category descriptions, preferences panel title).
+- `NeikiCookieBanner.addTranslation(langCode, table)` — register custom translations.
+- `NeikiCookieBanner.getTranslation(langCode)` — retrieve a translation table.
+- Category labels and descriptions are automatically resolved from i18n when not
+  explicitly overridden in config.
+
+#### Script blocking & unlocking
+- Support for `<script type="text/plain" data-category="analytics|marketing|...">` —
+  scripts with this pattern are blocked by the browser and only activated after consent.
+- `unlockScripts(category)` internal helper replaces blocked `<script>` elements
+  with executable copies upon consent.
+- `relockScripts(category)` removes previously unlocked scripts on revoke.
+- `unlockAllAccepted(categories)` automatically unlocks all consented categories
+  on accept / save / page reload with existing consent.
+- `NeikiCookieBanner.unlockScripts(category)` — public API for manual script unlocking.
+
+#### Revoke / withdraw consent API
+- `NeikiCookieBanner.revoke(reopenBanner)` — removes stored consent, re-blocks
+  Google Consent Mode, removes unlocked tracking scripts, fires `onRevoke` callback,
+  and optionally re-opens the banner (default: `true`).
+- New `onRevoke(previousConsent)` lifecycle callback.
+
+#### Google Consent Mode v2
+- `googleConsentMode: true` config option.
+- On init: pushes `consent → default` with all signals set to `denied`
+  (`ad_storage`, `ad_user_data`, `ad_personalization`, `analytics_storage`,
+  `functionality_storage`, `personalization_storage`; `security_storage` = `granted`).
+- On accept / save: pushes `consent → update` mapping categories to GCM signals.
+- On revoke: pushes `consent → update` resetting all signals to `denied`.
+- Creates `window.gtag` and `window.dataLayer` if not already present.
+
+#### Persistent "Cookie settings" hook
+- `data-neiki-show-prefs` attribute hook (existing) — any element with this attribute
+  reopens the preference banner on click; works as a permanent footer link.
+- `NeikiCookieBanner.show()` re-renders toggle states from scratch on each call.
+
+#### Web Component updates
+- `data-language` attribute support on `<neiki-cookie-banner>`.
+- `data-google-consent-mode` attribute support on `<neiki-cookie-banner>`.
+
+### Changed
+
+- `DEFAULTS` no longer contains text strings — all UI text is resolved from the
+  i18n system at runtime based on the configured `language`.
+- `managePreferencesTitle` config key added (replaces hardcoded "Manage Preferences").
+- Consent actions (`_acceptAll`, `_reject`, `_savePrefs`) now also trigger GCM
+  updates and script unlocking automatically.
+- `init()` now re-applies GCM + unlocks scripts for already-consented categories
+  on page reload.
+
+### Removed
+
+- **`autoAcceptAfterMs`** — completely removed. Passing this option now logs a
+  console warning and the value is silently discarded. GDPR requires explicit,
+  freely given consent for analytics/marketing cookies; auto-accept is not compliant.
+- Countdown bar UI (HTML rendering + CSS styles) removed entirely.
+- `--ncb-countdown-bg` and `--ncb-countdown-text` CSS custom properties removed.
+
+### Fixed
+
+- Preferences panel title is now configurable via `managePreferencesTitle` instead
+  of being hardcoded to English.
+
+---
+
 ## [1.0.0] — 2026-04-29
 
 Initial public release. **neiki-cookie-banner** is a production-ready, GDPR-friendly
@@ -143,4 +220,5 @@ cookie consent banner written in vanilla JavaScript with zero dependencies.
 - `LICENSE` — MIT.
 - `CONTRIBUTING.md` and `CODE_OF_CONDUCT.md`.
 
+[2.0.0]: https://github.com/neiki/neiki-cookie-banner/releases/tag/v2.0.0
 [1.0.0]: https://github.com/neiki/neiki-cookie-banner/releases/tag/v1.0.0
