@@ -29,7 +29,7 @@
 
 ---
 
-**Live demo:** [https://neiki.eu/cookie-banner](https://neiki.eu/cookie-banner)
+**Live demo:** [https://neikiri.dev/cookie-banner](https://neikiri.dev/cookie-banner)
 
 ---
 
@@ -99,7 +99,7 @@ into the JS file, so a single `<script>` tag is all you need.
 The fastest, simplest way to get started — one tag, no separate stylesheet:
 
 ```html
-<script src="https://cdn.neiki.eu/neiki-cookie-banner/latest/neiki-cookie-banner.min.js"></script>
+<script src="https://cdn.neikiri.dev/neiki-cookie-banner/latest/neiki-cookie-banner.min.js"></script>
 ```
 
 ### 2. CDN — separate JS and CSS
@@ -108,8 +108,8 @@ If you prefer to load the stylesheet independently (e.g. to inline-tweak it
 or preload it):
 
 ```html
-<link rel="stylesheet" href="https://cdn.neiki.eu/neiki-cookie-banner/latest/neiki-cookie-banner.css">
-<script src="https://cdn.neiki.eu/neiki-cookie-banner/latest/neiki-cookie-banner.js"></script>
+<link rel="stylesheet" href="https://cdn.neikiri.dev/neiki-cookie-banner/latest/neiki-cookie-banner.css">
+<script src="https://cdn.neikiri.dev/neiki-cookie-banner/latest/neiki-cookie-banner.js"></script>
 ```
 
 ### 3. Local install — minified bundle (CSS included)

@@ -12,7 +12,7 @@ If you discover a security vulnerability in **Neiki's Cookie Banner**, please
 **do not** open a public GitHub issue. Instead, report it privately so it can
 be investigated and patched before disclosure.
 
-**Contact:** [dev@neiki.eu](mailto:dev@neiki.eu)
+**Contact:** [neikiri@neikiri.dev](mailto:neikiri@neikiri.dev)
 
 Please include as much detail as possible:
 
