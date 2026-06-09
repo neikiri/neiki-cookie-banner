@@ -20,6 +20,12 @@
 </p>
 
 <p align="center">
+  <a href="https://sourceforge.net/projects/neiki-cookie-banner/files/latest/download"><img alt="Download Neiki&#39;s Cookie Banner" src="https://a.fsdn.com/con/app/sf-download-button" width=276 height=48 srcset="https://a.fsdn.com/con/app/sf-download-button?button_size=2x 2x"></a>
+</p>
+
+</p>
+
+<p align="center">
   <img src="https://img.shields.io/badge/Layouts-Bar%20%7C%20Box%20%7C%20Modal-3b82f6?style=flat&labelColor=383C43" />
   <img src="https://img.shields.io/badge/Themes-Light%20%7C%20Dark%20%7C%20Auto-8b5cf6?style=flat&labelColor=383C43" />
   <img src="https://img.shields.io/badge/Setup-Zero%20Config-22c55e?style=flat&labelColor=383C43" />
