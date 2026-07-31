@@ -1,5 +1,5 @@
 <p align="center">
-  <img src="logo.png" alt="neiki-cookie-banner" width="650">
+  <img src="logo.svg" alt="neiki-cookie-banner" style="height: 90px; width: auto;">
 </p>
 
 <h1 align="center">Neiki's Cookie Banner</h1>
